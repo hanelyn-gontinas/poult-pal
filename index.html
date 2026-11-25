@@ -1,0 +1,512 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poult Pal - Chicken Care Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+ 
+<body>
+ 
+    <div class="game-container">
+ 
+        <!-- HEADER -->
+        <header>
+            <h1>🐥 Poult Pal</h1>
+            <p>Your Little Chick, Your Big Responsibility!</p>
+        </header>
+ 
+        <!-- HOME SCREEN -->
+        <main id="home-screen">
+ 
+            <section class="welcome-section">
+ 
+                <div class="chick-image">🐥</div>
+ 
+                <h2>Welcome to Poult Pal!</h2>
+ 
+                <p>
+                    Your little chicken needs you!
+                    Take good care of it and help it grow.
+                </p>
+ 
+            <div class="username-section">
+                <label for="username">Enter Your Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter your username"
+                    maxlength="20"
+                    autocomplete="username"
+                >
+ 
+                <!-- Choose whether to sign in to an account or create a new one. -->
+                <div class="account-buttons">
+                    <button id="start-btn" type="button">Sign In</button>
+                    <button id="signup-btn" type="button">Sign Up</button>
+                </div>
+ 
+                <p id="login-message"></p>
+            </div>
+ 
+            </section>
+ 
+            <!-- PLAYER DASHBOARD -->
+            <section class="dashboard">
+ 
+                <div class="dashboard-header">
+                    <h2>🏆 Player Dashboard</h2>
+                    <p>Your previous game records</p>
+                </div>
+ 
+                <div class="stats-container">
+ 
+                    <div class="stat-card">
+                        <span>🎮</span>
+                        <h3 id="total-games">0</h3>
+                        <p>Games Played</p>
+                    </div>
+ 
+                    <div class="stat-card">
+                        <span>⭐</span>
+                        <h3 id="high-score">0</h3>
+                        <p>Highest Score</p>
+                    </div>
+ 
+                    <div class="stat-card">
+                        <span>🎯</span>
+                        <h3 id="last-score">0</h3>
+                        <p>Last Score</p>
+                    </div>
+ 
+                </div>
+ 
+                <div class="leaderboard">
+ 
+                    <h3>🥇 High Scores</h3>
+ 
+                    <div id="leaderboard-list">
+                        <p class="empty-message">
+                            No records yet. Be the first to play!
+                        </p>
+                    </div>
+ 
+                </div>
+ 
+            </section>
+ 
+        </main>
+ 
+ 
+        <!-- EGG SELECTION SCREEN -->
+        <main id="egg-screen" class="hidden">
+ 
+            <section class="game-panel">
+ 
+                <h2>Choose Your Egg! 🥚</h2>
+ 
+                <p>Pick one egg to discover your little chicken.</p>
+ 
+                <div class="egg-container">
+ 
+                    <button class="egg" data-egg="1">
+                        <span>🥚</span>
+                        <small>Egg 1</small>
+                    </button>
+ 
+                    <button class="egg" data-egg="2">
+                        <span>🥚</span>
+                        <small>Egg 2</small>
+                    </button>
+ 
+                    <button class="egg" data-egg="3">
+                        <span>🥚</span>
+                        <small>Egg 3</small>
+                    </button>
+ 
+                    <button class="egg" data-egg="4">
+                        <span>🥚</span>
+                        <small>Egg 4</small>
+                    </button>
+ 
+                </div>
+ 
+                <p id="egg-message">
+                    Select one egg to continue.
+                </p>
+ 
+            </section>
+ 
+        </main>
+ 
+ 
+        <!-- HATCHING SCREEN -->
+        <main id="hatching-screen" class="hidden">
+ 
+            <section class="game-panel hatching-panel">
+ 
+                <h2>Something is happening! 🥚</h2>
+ 
+                <p>Your little chicken is coming!</p>
+ 
+                <div id="hatching-egg" class="hatching-egg">
+                    🥚
+                </div>
+ 
+                <h3 id="hatching-message">
+                    Your egg is hatching...
+                </h3>
+ 
+                <div id="chick-naming" class="hidden">
+                <h2>Give Your Chick a Name! 🐤</h2>
+ 
+                  <input
+                        type="text"
+                        id="chick-name-input"
+                        placeholder="Enter your chick's name"
+                        maxlength="20"
+                 >
+ 
+                  <button id="confirm-chick-name-btn">
+                        Meet My Chick!
+                  </button>
+ 
+                  <p id="chick-name-message"></p>
+                </div>
+ 
+            </section>
+ 
+        </main>
+ 
+ 
+        <!-- CHICK INTRODUCTION SCREEN -->
+        <main id="intro-screen" class="hidden">
+ 
+            <section class="game-panel">
+ 
+                <h2>Meet Your Little Chicken!</h2>
+ 
+                <div class="new-chick">🐥</div>
+ 
+                <h3>Hello, little one!</h3>
+ 
+                <p>
+                    Congratulations! You now have a little chicken
+                    to take care of.
+                </p>
+ 
+                <div class="chicken-info">
+ 
+                    <div>
+                        <span>🐥</span>
+                        <strong>Age</strong>
+                        <p>45 Days Old</p>
+                    </div>
+ 
+                    <div>
+                        <span>🏡</span>
+                        <strong>Environment</strong>
+                        <p>Your Chicken's Home</p>
+                    </div>
+ 
+                </div>
+ 
+                <p class="intro-note">
+                    Your responsibility is to keep your chicken
+                    healthy, comfortable, and well taken care of.
+                </p>
+ 
+                <button id="instructions-btn" class="primary-btn">
+                    Read Care Instructions
+                </button>
+ 
+            </section>
+ 
+        </main>
+ 
+ 
+        <!-- INSTRUCTIONS SCREEN -->
+        <main id="instructions-screen" class="hidden">
+ 
+            <section class="game-panel instructions-panel">
+ 
+                <h2>📖 How to Take Care of Your Chicken</h2>
+ 
+                <p class="instruction-subtitle">
+                    Learn the basics before starting your responsibility!
+                </p>
+ 
+                <div class="instruction-list">
+ 
+                    <div class="instruction-item">
+                        <span>🌾</span>
+                        <div>
+                            <h3>Feeding</h3>
+                            <p>
+                                Provide enough food at the appropriate
+                                times. Make sure your chicken does not
+                                stay hungry.
+                            </p>
+                        </div>
+                    </div>
+ 
+                    <div class="instruction-item">
+                        <span>💧</span>
+                        <div>
+                            <h3>Drinking Water</h3>
+                            <p>
+                                Always provide clean drinking water.
+                                Refill the water when it runs out.
+                            </p>
+                        </div>
+                    </div>
+ 
+                    <div class="instruction-item">
+                        <span>💊</span>
+                        <div>
+                            <h3>Vitamins</h3>
+                            <p>
+                                Follow the indicated care schedule
+                                for the vitamins in the game.
+                            </p>
+                        </div>
+                    </div>
+ 
+                    <div class="instruction-item">
+                        <span>🌙</span>
+                        <div>
+                            <h3>Sleep and Rest</h3>
+                            <p>
+                                Give your chicken enough time to rest.
+                                Use the lights to manage its sleeping
+                                environment.
+                            </p>
+                        </div>
+                    </div>
+ 
+                    <div class="instruction-item">
+                        <span>💚</span>
+                        <div>
+                            <h3>Stress and Comfort</h3>
+                            <p>
+                                Maintain a comfortable environment.
+                                Avoid conditions that may increase
+                                your chicken's stress.
+                            </p>
+                        </div>
+                    </div>
+ 
+                </div>
+ 
+                <div class="game-rules">
+ 
+                    <h3>🎮 Game Rules</h3>
+ 
+                    <ul>
+                        <li>Take care of your chicken for 3 days.</li>
+                        <li>Each in-game day lasts 24 real-world minutes.</li>
+                        <li>Monitor your chicken's needs regularly.</li>
+                        <li>Earn points by providing proper care.</li>
+                        <li>Neglecting your chicken may lead to Game Over.</li>
+                        <li>Your final score depends on your chicken's condition.</li>
+                    </ul>
+ 
+                </div>
+ 
+                <button id="begin-care-btn" class="primary-btn">
+                    Begin Care! 🐥
+                </button>
+ 
+            </section>
+ 
+        </main>
+ 
+ 
+        <!-- GAMEPLAY PLACEHOLDER -->
+ 
+<!-- GAMEPLAY SCREEN -->
+<main id="gameplay-screen" class="hidden">
+ 
+    <section class="gameplay-container">
+ 
+        <!-- GAME HEADER -->
+        <div class="game-header">
+ 
+            <div>
+                <h2>🐥 Poult Pal</h2>
+                <p id="player-greeting">Hello, Player!</p>
+            </div>
+ 
+            <div class="game-time">
+                <span id="game-day">📅 Day 1 of 3</span>
+                <h3 id="game-clock">06:00 AM</h3>
+            </div>
+ 
+        </div>
+ 
+ 
+        <!-- CHICKEN STATUS -->
+        <section class="status-panel">
+ 
+            <h3>📊 Chicken Status</h3>
+ 
+            <div class="status-grid">
+ 
+                <div class="status-item">
+                    <span>🌾 Hunger</span>
+                    <strong id="hunger-value">100%</strong>
+                    <div class="status-bar">
+                        <div id="hunger-bar" class="status-fill hunger-fill"></div>
+                    </div>
+                </div>
+ 
+                <div class="status-item">
+                    <span>💧 Thirst</span>
+                    <strong id="thirst-value">100%</strong>
+                    <div class="status-bar">
+                        <div id="thirst-bar" class="status-fill thirst-fill"></div>
+                    </div>
+                </div>
+ 
+                <div class="status-item">
+                    <span>💚 Health</span>
+                    <strong id="health-value">100%</strong>
+                    <div class="status-bar">
+                        <div id="health-bar" class="status-fill health-fill"></div>
+                    </div>
+                </div>
+ 
+                <div class="status-item">
+                    <span>😟 Stress</span>
+                    <strong id="stress-value">0%</strong>
+                    <div class="status-bar">
+                        <div id="stress-bar" class="status-fill stress-fill"></div>
+                    </div>
+                </div>
+ 
+                <div class="status-item">
+                    <span>🌡️ Temperature</span>
+                    <strong id="temperature-value">Normal</strong>
+                </div>
+ 
+            </div>
+ 
+        </section>
+ 
+ 
+        <!-- CHICKEN ENVIRONMENT -->
+        <section class="chicken-area">
+ 
+            <div class="environment-header">
+ 
+                <h3>🏡 Chicken's Home</h3>
+ 
+                <button id="lights-btn">
+                    💡 Lights On
+                </button>
+ 
+            </div>
+ 
+            <div id="chicken-environment">
+ 
+                <div class="environment-decoration">
+                    ☁️
+                </div>
+ 
+                <div class="chicken-character" id="chicken-character">
+                    🐤
+                </div>
+ 
+                <h3 id="chicken-name">Your Little Chicken</h3>
+ 
+                <p id="chicken-message">
+                    Your chicken is feeling good!
+                </p>
+ 
+                <div class="food-water-area">
+ 
+                    <div id="food-container">
+                        🌾
+                        <small>Food</small>
+                    </div>
+ 
+                    <div id="water-container">
+                        💧
+                        <small>Water</small>
+                    </div>
+ 
+                </div>
+ 
+            </div>
+ 
+        </section>
+ 
+ 
+        <!-- CARE ACTIONS -->
+        <section class="care-panel">
+ 
+            <h3>🐥 Chicken Care</h3>
+ 
+            <p>Choose what your chicken needs.</p>
+ 
+            <div class="care-buttons">
+ 
+                <button id="feed-btn">
+                    🌾
+                    <span>Feed</span>
+                </button>
+ 
+                <button id="water-btn">
+                    💧
+                    <span>Water</span>
+                </button>
+ 
+                <button id="vitamins-btn">
+                    💊
+                    <span>Vitamins</span>
+                </button>
+ 
+                <button id="sleep-btn">
+                    🌙
+                    <span>Sleep</span>
+                </button>
+ 
+                <button id="comfort-btn">
+                    💚
+                    <span>Comfort</span>
+                </button>
+ 
+            </div>
+ 
+        </section>
+ 
+ 
+        <!-- GAME FOOTER -->
+        <div class="game-footer">
+ 
+            <p>⭐ Score: <strong id="current-score">0</strong></p>
+ 
+            <button id="quit-btn">
+                🚪 Quit Game
+            </button>
+ 
+        </div>
+ 
+    </section>
+ 
+</main>
+ 
+ 
+    </div>
+ 
+ 
+    <footer>
+        <p>
+            Poult Pal © 2026 |
+            Your Little Chick, Your Big Responsibility 🐥
+        </p>
+    </footer>
+ 
+    <script src="script.js"></script>
+ 
+</body>
