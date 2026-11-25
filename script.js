@@ -1,4 +1,3 @@
-// ===================================
 // POULT PAL - MAIN JAVASCRIPT
 // ===================================
  
@@ -30,13 +29,15 @@ const beginCareBtn = document.getElementById("begin-care-btn");
 // PLAYER PROFILE SYSTEM
 // ===================================
  
-let gameRecords = JSON.parse(
-    localStorage.getItem("poultPalRecords")
-) || [];
- 
-let playerProfiles = JSON.parse(
-    localStorage.getItem("poultPalPlayers")
-) || {};
+// Load saved player data safely from this browser's local storage.
+let gameRecords = [];
+let playerProfiles = {};
+try {
+    gameRecords = JSON.parse(localStorage.getItem("poultPalRecords")) || [];
+    playerProfiles = JSON.parse(localStorage.getItem("poultPalPlayers")) || {};
+} catch (error) {
+    console.warn("Poult Pal could not read saved data:", error);
+}
  
 let chickenStatus = {
     hunger: 100,
@@ -98,32 +99,53 @@ function showScreen(screenToShow) {
 // ===================================
  
 function updateDashboard() {
-    // Get the current player's profile
-    if (currentPlayer) {
-        const totalGames = currentPlayer.gamesPlayed || 0;
-        const highScore = currentPlayer.highScore || 0;
-        const lastScore = currentPlayer.lastScore || 0;
+    const totalGamesEl = document.getElementById("total-games");
+    const highScoreEl = document.getElementById("high-score");
+    const lastScoreEl = document.getElementById("last-score");
+    const sessionSummary = document.getElementById("session-summary");
  
-        document.getElementById("total-games").textContent = totalGames;
-        document.getElementById("high-score").textContent = highScore;
-        document.getElementById("last-score").textContent = lastScore;
+    // Show the signed-in player's saved statistics; keep older profiles compatible.
+    if (currentPlayer) {
+        currentPlayer.gamesPlayed = Number(currentPlayer.gamesPlayed) || 0;
+        currentPlayer.highScore = Number(currentPlayer.highScore) || 0;
+        currentPlayer.lastScore = Number(currentPlayer.lastScore) || 0;
+ 
+        totalGamesEl.textContent = currentPlayer.gamesPlayed;
+        highScoreEl.textContent = currentPlayer.highScore;
+        lastScoreEl.textContent = currentPlayer.lastScore;
+ 
+        if (currentPlayer.savedGame) {
+            const saved = currentPlayer.savedGame;
+            sessionSummary.textContent =
+                "Saved game: Day " + (saved.gameDay || 1) + " of 3 · " +
+                (saved.chickName || currentPlayer.chickName || "Your chick") +
+                " · Score " + (saved.currentScore || 0);
+        } else if (currentPlayer.lastGame) {
+            const last = currentPlayer.lastGame;
+            const resultText = last.result === "completed"
+                ? "Completed all 3 days"
+                : "Game over on Day " + (last.day || 1);
+            sessionSummary.textContent =
+                "Last game: " + resultText + " · Score " + (last.score || 0);
+        } else {
+            sessionSummary.textContent = "No saved game yet. Start your first game!";
+        }
     } else {
-        document.getElementById("total-games").textContent = 0;
-        document.getElementById("high-score").textContent = 0;
-        document.getElementById("last-score").textContent = 0;
+        totalGamesEl.textContent = "0";
+        highScoreEl.textContent = "0";
+        lastScoreEl.textContent = "0";
+        sessionSummary.textContent = "Sign in to view your saved game.";
     }
  
-    // Update leaderboard
+    // Show the five highest saved scores from all players.
     const leaderboardList = document.getElementById("leaderboard-list");
- 
     leaderboardList.innerHTML = "";
  
     const sortedRecords = [...gameRecords].sort(function(a, b) {
-        return b.score - a.score;
+        return (Number(b.score) || 0) - (Number(a.score) || 0);
     });
  
     const topPlayers = sortedRecords.slice(0, 5);
- 
     if (topPlayers.length === 0) {
         leaderboardList.innerHTML = "<li>No records yet. Start playing!</li>";
         return;
@@ -131,12 +153,9 @@ function updateDashboard() {
  
     topPlayers.forEach(function(record, index) {
         const listItem = document.createElement("li");
- 
         listItem.textContent =
-            (index + 1) + ". " +
-            record.username + " - " +
-            record.score + " points";
- 
+            (index + 1) + ". " + record.username + " - " +
+            (Number(record.score) || 0) + " points";
         leaderboardList.appendChild(listItem);
     });
 }
@@ -166,74 +185,90 @@ function handlePlayerAccount(mode) {
     const username = usernameInput.value.trim();
  
     if (username === "") {
-        loginMessage.textContent = "Please enter your username first!";
+        loginMessage.textContent = "Please enter your username first.";
+        usernameInput.focus();
         return;
     }
  
     if (!/^[a-zA-Z0-9_ ]{3,20}$/.test(username)) {
         loginMessage.textContent =
             "Use 3–20 letters, numbers, spaces, or underscores.";
+        usernameInput.focus();
         return;
     }
  
     currentUsername = username;
  
-    // Check existing player.
     if (mode === "signup") {
+        // A username can only be registered once in this browser.
         if (playerProfiles[currentUsername]) {
             loginMessage.textContent =
-                "That username already exists. Please sign in.";
+                "That username is already registered. Please press Sign In.";
             return;
         }
  
-        // Register new player.
-        // Register a new player profile in this browser's local storage.
+        // Create a fresh player profile before allowing access to the game.
         currentPlayer = {
             username: currentUsername,
             chickName: "",
             savedGame: null,
             gamesPlayed: 0,
             highScore: 0,
-            lastScore: 0
+            lastScore: 0,
+            lastGame: null
         };
  
         playerProfiles[currentUsername] = currentPlayer;
         savePlayerProfiles();
         loginMessage.textContent = "Account created! Welcome to Poult Pal! 🐣";
     } else {
+        // Sign in is only for usernames that already have a registered profile.
         if (!playerProfiles[currentUsername]) {
+            currentPlayer = null;
             loginMessage.textContent =
-                "Username not found. Please sign up first.";
+                "Username not found. Please press Sign Up to create your account and start playing.";
+            updateDashboard();
             return;
         }
  
         currentPlayer = playerProfiles[currentUsername];
+        currentPlayer.username = currentUsername;
+        currentPlayer.gamesPlayed = Number(currentPlayer.gamesPlayed) || 0;
+        currentPlayer.highScore = Number(currentPlayer.highScore) || 0;
+        currentPlayer.lastScore = Number(currentPlayer.lastScore) || 0;
+        savePlayerProfiles();
         loginMessage.textContent = "Welcome back, " + currentUsername + "!";
  
         if (currentPlayer.savedGame) {
             const choice = confirm(
                 "Welcome back, " + currentUsername + "!\n\n" +
-                "We found your saved game.\n\n" +
+                "We found your saved game.\n" +
+                "Current progress: Day " + (currentPlayer.savedGame.gameDay || 1) +
+                " of 3 | Score: " + (currentPlayer.savedGame.currentScore || 0) + "\n\n" +
                 "Press OK to CONTINUE your game.\n" +
                 "Press CANCEL to START A NEW GAME."
             );
  
             if (choice) {
                 loadSavedGame();
+                updateDashboard();
                 return;
             }
  
             const confirmNewGame = confirm(
                 "Start a new game? Your saved progress will be replaced."
             );
+            if (!confirmNewGame) {
+                updateDashboard();
+                return;
+            }
  
-            if (!confirmNewGame) return;
             currentPlayer.savedGame = null;
             savePlayerProfiles();
         }
     }
  
-    // Prepare a new game.
+    // Only a successfully registered or signed-in player can enter the game.
     prepareNewGame();
     eggMessage.textContent = "Select one egg to continue.";
     showScreen(eggScreen);
@@ -1163,6 +1198,13 @@ function finishGame(result) {
         finalScore
     );
     currentPlayer.lastScore = finalScore;
+    currentPlayer.lastGame = {
+        day: gameDay,
+        score: finalScore,
+        result: result,
+        chickName: currentChickName,
+        finishedAt: new Date().toISOString()
+    };
  
     currentPlayer.savedGame = null;
  
@@ -1236,3 +1278,4 @@ document.getElementById("quit-btn").addEventListener("click", function() {
     }
  
 });
+ 

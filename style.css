@@ -1,946 +1,522 @@
-
-/* ===================================
-   POULT PAL - MAIN DESIGN
-=================================== */
-
+/* Poult Pal — organized responsive stylesheet */
+ 
+/* 1. Theme colors and shared design values */
+:root {
+    --ink: #49362d;
+    --muted: #806d61;
+    --cream: #fffaf0;
+    --paper: #ffffff;
+    --peach: #ffe2c5;
+    --orange: #f4a261;
+    --orange-dark: #d97932;
+    --green: #8ab17d;
+    --line: #f0dfcf;
+    --shadow: 0 12px 32px rgba(94, 63, 39, .09);
+}
+/* 2. Base page styles and reusable controls */
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
-
+/* Page background and default typography */
 body {
-    font-family: 'Trebuchet MS', Arial, sans-serif;
-    background-color: #fff9ed;
-    color: #66513b;
+    margin: 0;
     min-height: 100vh;
-    padding: 30px 15px;
+    color: var(--ink);
+    background: linear-gradient(180deg, #fff4e5 0%, #fffaf4 45%, #f8f1e8 100%);
+    font-family: "Trebuchet MS", Arial, sans-serif;
 }
-
+button, input {
+    font: inherit;
+}
+/* Shared button appearance and interaction states */
+button {
+    border: 0;
+    border-radius: 14px;
+    padding: 12px 18px;
+    color: #fff;
+    background: var(--orange-dark);
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s ease, filter .15s ease;
+}
+button:hover {
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+}
+button:focus-visible, input:focus-visible {
+    outline: 3px solid #e8a15f;
+    outline-offset: 3px;
+}
+/* 3. Main layout and shared panels */
 .game-container {
-    width: 100%;
-    max-width: 950px;
-    margin: auto;
+    width: min(1100px, calc(100% - 32px));
+    margin: 0 auto;
 }
-
-/* ===================================
-   HEADER
-=================================== */
-
 header {
     text-align: center;
-    margin-bottom: 35px;
+    padding: 28px 12px 18px;
 }
-
 header h1 {
-    font-size: 38px;
-    color: #bd8b35;
-    margin-bottom: 8px;
+    margin: 0;
+    color: #bd6b35;
+    font-size: clamp(2rem, 5vw, 3rem);
 }
-
-header p {
-    color: #a28c70;
-    font-size: 14px;
+header p, .dashboard-header p, .welcome-section > p {
+    color: var(--muted);
 }
-
-/* ===================================
-   HOME SCREEN
-=================================== */
-
-#home-screen {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 22px;
-    align-items: stretch;
+main {
+    padding: 12px 0 28px;
 }
-
-.welcome-section,
-.dashboard,
-.game-panel {
-    background-color: #ffffff;
-    border: 1px solid #f1e6d3;
-    border-radius: 22px;
-    padding: 30px;
-    box-shadow: 0 5px 18px rgba(115, 86, 43, 0.07);
-}
-
-.welcome-section {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.chick-image {
-    font-size: 85px;
-    margin-bottom: 15px;
-}
-
-.welcome-section h2 {
-    color: #9b7136;
-    margin-bottom: 12px;
-    font-size: 23px;
-}
-
-.welcome-section > p {
-    color: #998873;
-    font-size: 14px;
-    line-height: 1.7;
-    margin-bottom: 25px;
-}
-
-/* ===================================
-   USERNAME
-=================================== */
-
-.username-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    text-align: left;
-}
-
-.username-container label {
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.username-container input {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid #eadfcf;
-    border-radius: 10px;
-    outline: none;
-    font-size: 14px;
-    background-color: #fffdf8;
-}
-
-.username-container input:focus {
-    border-color: #e9b94e;
-}
-
-button {
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    transition: 0.2s ease;
-}
-
-#start-btn,
-.primary-btn {
-    background-color: #e9b94e;
-    color: white;
-    font-weight: bold;
-    padding: 14px 20px;
-    border-radius: 11px;
-}
-
-#start-btn:hover,
-.primary-btn:hover {
-    background-color: #d6a333;
-    transform: translateY(-2px);
-}
-
-/* ===================================
-   DASHBOARD
-=================================== */
-
-.dashboard {
-    display: flex;
-    flex-direction: column;
-}
-
-.dashboard-header {
-    margin-bottom: 22px;
-}
-
-.dashboard-header h2 {
-    color: #9b7136;
-    font-size: 21px;
-    margin-bottom: 7px;
-}
-
-.dashboard-header p {
-    font-size: 13px;
-    color: #a28c70;
-}
-
-.stats-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 25px;
-}
-
-.stat-card {
-    background-color: #fff7e5;
-    border-radius: 15px;
-    padding: 18px 10px;
-    text-align: center;
-}
-
-.stat-card span {
-    font-size: 28px;
-}
-
-.stat-card h3 {
-    font-size: 25px;
-    color: #b98a36;
-    margin: 7px 0;
-}
-
-.stat-card p {
-    font-size: 12px;
-    color: #998873;
-}
-
-.leaderboard {
-    background-color: #fffaf2;
-    border-radius: 14px;
-    padding: 18px;
-    flex: 1;
-}
-
-.leaderboard h3 {
-    font-size: 16px;
-    margin-bottom: 15px;
-    color: #8d7048;
-}
-
-.empty-message {
-    color: #a89a84;
-    font-size: 13px;
-    text-align: center;
-    padding: 15px 5px;
-}
-
-/* ===================================
-   HIDDEN SCREENS
-=================================== */
-
 .hidden {
     display: none !important;
 }
-
-/* ===================================
-   GAME PANEL
-=================================== */
-
-.game-panel {
+/* 4. Welcome screen and account forms */
+.welcome-section, .dashboard, .game-panel, .gameplay-container, .status-panel,
+.chicken-area, .care-panel {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+/* 4. Welcome screen and account forms */
+.welcome-section {
+    max-width: 650px;
+    margin: 0 auto 24px;
+    padding: 30px;
     text-align: center;
-    padding: 35px 25px;
 }
-
-.game-panel > h2 {
-    color: #9b7136;
-    margin-bottom: 12px;
+.chick-image, .new-chick {
+    font-size: 4rem;
+    margin: 4px 0 12px;
 }
-
-.game-panel > p {
-    color: #998873;
-    line-height: 1.6;
-    font-size: 14px;
+.username-section {
+    max-width: 420px;
+    margin: 22px auto 0;
+    text-align: left;
 }
-
-/* ===================================
-   EGG SELECTION
-=================================== */
-
+.username-section label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+input {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid #e5d3c2;
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: var(--ink);
+    background: #fffdf9;
+}
+.account-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+.account-buttons button {
+    flex: 1;
+}
+.account-buttons #signup-btn {
+    color: var(--orange-dark);
+    background: #fff0df;
+}
+#login-message, #egg-message, #chick-name-message {
+    min-height: 22px;
+    color: #9b5a2b;
+}
+/* 5. Player dashboard and leaderboard */
+.dashboard {
+    padding: 24px;
+}
+.dashboard-header {
+    text-align: center;
+}
+.dashboard-header h2 {
+    margin-bottom: 6px;
+}
+.last-session {
+    color: var(--muted);
+    font-size: .92rem;
+    min-height: 1.3em;
+}
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 20px 0;
+}
+.stat-card {
+    padding: 18px 10px;
+    border-radius: 18px;
+    text-align: center;
+    background: #fff5e9;
+}
+.stat-card span {
+    font-size: 1.6rem;
+}
+.stat-card h3 {
+    margin: 7px 0 2px;
+    font-size: 1.8rem;
+    color: #bc6c35;
+}
+.stat-card p {
+    margin: 0;
+    color: var(--muted);
+}
+.leaderboard {
+    padding: 18px;
+    border-radius: 18px;
+    background: #fffaf4;
+}
+.leaderboard h3 {
+    margin-top: 0;
+}
+#leaderboard-list {
+    padding-left: 24px;
+}
+#leaderboard-list li {
+    padding: 7px 0;
+    border-bottom: 1px solid var(--line);
+}
+/* 6. Egg selection and chick setup screens */
+.game-panel {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(20px, 4vw, 36px);
+    text-align: center;
+}
 .egg-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin: 35px 0;
+    gap: 12px;
+    margin: 24px 0;
 }
-
 .egg {
-    background-color: #fff7e5;
-    border: 2px solid #f2e5ca;
-    border-radius: 17px;
-    padding: 22px 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
     gap: 8px;
+    justify-items: center;
+    padding: 18px 8px;
+    color: var(--ink);
+    background: #fff0d9;
+    border: 2px solid transparent;
 }
-
-.egg:hover {
-    background-color: #fff0c9;
-    border-color: #e9b94e;
-    transform: translateY(-5px);
-}
-
 .egg span {
-    font-size: 45px;
+    font-size: 2.4rem;
 }
-
-.egg small {
-    font-size: 12px;
-    color: #795b36;
-    font-weight: bold;
+.egg.selected {
+    border-color: var(--orange-dark);
+    background: #ffe3c2;
 }
-
-#egg-message {
-    margin-top: 15px;
-}
-
-/* ===================================
-   HATCHING ANIMATION
-=================================== */
-
-.hatching-panel {
-    padding: 45px 20px;
-}
-
 .hatching-egg {
-    font-size: 110px;
-    margin: 35px 0;
-    animation: eggShake 0.5s infinite;
+    font-size: 5rem;
+    padding: 18px;
 }
-
 .hatching-egg.hatched {
-    animation: chickPop 0.7s ease forwards;
+    animation: hatch .45s ease;
 }
-
-@keyframes eggShake {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-8deg); }
-    75% { transform: rotate(8deg); }
+/* Small animation used when the egg hatches */
+@keyframes hatch {
+    50% {
+        transform: scale(1.18) rotate(-5deg);
+    }
 }
-
-@keyframes chickPop {
-    0% { transform: scale(0.2); opacity: 0; }
-    70% { transform: scale(1.2); opacity: 1; }
-    100% { transform: scale(1); opacity: 1; }
+#chick-naming {
+    max-width: 420px;
+    margin: 20px auto 0;
 }
-
-/* ===================================
-   CHICK INTRODUCTION
-=================================== */
-
-.new-chick {
-    font-size: 110px;
-    margin: 25px 0;
-    animation: chickFloat 2s ease-in-out infinite;
+#chick-naming button {
+    margin-top: 10px;
 }
-
-@keyframes chickFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
 .chicken-info {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin: 25px 0;
+    gap: 28px;
+    margin: 22px 0;
 }
-
-.chicken-info div {
-    background-color: #fff4d8;
-    padding: 20px;
-    border-radius: 12px;
-    flex: 1;
-    max-width: 200px;
+.chicken-info > div {
+    min-width: 140px;
+    padding: 16px;
+    border-radius: 16px;
+    background: #fff5e9;
 }
-
 .chicken-info span {
     display: block;
-    font-size: 30px;
-    margin-bottom: 8px;
+    font-size: 1.8rem;
 }
-
-.chicken-info strong {
-    display: block;
-    margin-bottom: 5px;
+.primary-btn {
+    margin-top: 12px;
+    padding: 14px 24px;
 }
-
-.chicken-info p {
-    font-size: 13px;
-    color: #8a7963;
-}
-
-.intro-note {
-    background-color: #f4f9e9;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-/* ===================================
-   INSTRUCTIONS
-=================================== */
-
-.instruction-subtitle {
-    margin-bottom: 25px;
-}
-
 .instruction-list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: 12px;
     text-align: left;
+    margin: 22px 0;
 }
-
 .instruction-item {
     display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    background-color: #fffaf0;
-    padding: 17px;
-    border-radius: 12px;
+    gap: 14px;
+    padding: 14px;
+    border-radius: 16px;
+    background: #fff8ef;
 }
-
 .instruction-item > span {
-    font-size: 30px;
+    font-size: 1.8rem;
 }
-
-.instruction-item h3 {
-    margin-bottom: 6px;
-    font-size: 16px;
+.instruction-item h3, .instruction-item p {
+    margin: 2px 0 6px;
 }
-
-.instruction-item p {
-    color: #8a7963;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
 .game-rules {
-    margin-top: 25px;
-    padding: 20px;
-    background-color: #f4f9e9;
-    border-radius: 12px;
     text-align: left;
+    padding: 16px;
+    border-radius: 16px;
+    background: #f5f8ed;
 }
-
-.game-rules h3 {
-    margin-bottom: 12px;
-}
-
-.game-rules ul {
-    padding-left: 20px;
-}
-
-.game-rules li {
-    margin-bottom: 9px;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-/* ===================================
-   PRIMARY BUTTON
-=================================== */
-
-.primary-btn {
-    margin-top: 25px;
-    width: 100%;
-    max-width: 350px;
-}
-
-/* ===================================
-   FOOTER
-=================================== */
-
-footer {
-    text-align: center;
-    margin: 35px auto 0;
-    color: #ad9a7e;
-    font-size: 12px;
-    line-height: 1.6;
-}
-
-/* ===================================
-   RESPONSIVE DESIGN
-=================================== */
-
-@media (max-width: 650px) {
-    #home-screen {
-        grid-template-columns: 1fr;
-    }
-
-    .egg-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .chicken-info {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .chicken-info div {
-        width: 100%;
-    }
-}
-
-@media (max-width: 400px) {
-    body {
-        padding: 20px 10px;
-    }
-
-    .welcome-section,
-    .dashboard,
-    .game-panel {
-        padding: 22px 17px;
-    }
-
-    header h1 {
-        font-size: 30px;
-    }
-}
-
-
-/* ===================================
-   GAMEPLAY - MAIN CONTAINER
-=================================== */
-
+/* 7. Gameplay layout and status indicators */
 .gameplay-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    padding: clamp(14px, 3vw, 26px);
 }
-
-/* ===================================
-   GAME HEADER
-=================================== */
-
 .game-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fff;
-    padding: 20px 25px;
-    border-radius: 18px;
-    border: 1px solid #f1e6d3;
-    box-shadow: 0 4px 12px rgba(100, 75, 35, 0.06);
+    gap: 14px;
+    padding: 8px 4px 18px;
 }
-
-.game-header h2 {
-    color: #9b7136;
-    margin-bottom: 5px;
+.game-header h2, .game-header p {
+    margin: 4px 0;
 }
-
-.game-header p {
-    color: #998873;
-    font-size: 13px;
-}
-
 .game-time {
     text-align: right;
-    background: #fff5dc;
-    padding: 12px 18px;
-    border-radius: 12px;
 }
-
-.game-time span {
-    font-size: 12px;
-    color: #998873;
-}
-
 .game-time h3 {
-    color: #b98a36;
-    margin-top: 5px;
+    margin: 6px 0;
+    color: #b96732;
 }
-
-/* ===================================
-   STATUS PANEL
-=================================== */
-
-.status-panel,
-.chicken-area,
-.care-panel {
-    background: #fff;
-    padding: 23px;
-    border-radius: 18px;
-    border: 1px solid #f1e6d3;
-    box-shadow: 0 4px 12px rgba(100, 75, 35, 0.06);
+.status-panel, .chicken-area, .care-panel {
+    padding: 20px;
+    margin: 14px 0;
+    box-shadow: none;
 }
-
-.status-panel h3,
-.care-panel h3 {
-    color: #9b7136;
-    margin-bottom: 18px;
+.status-panel h3, .care-panel h3 {
+    margin-top: 0;
 }
-
+/* Chicken condition bars and status cards */
 .status-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 17px;
+    gap: 14px;
 }
-
 .status-item {
-    background: #fffaf1;
-    padding: 13px;
+    padding: 10px;
     border-radius: 12px;
+    background: #fff9f2;
 }
-
-.status-item span {
-    font-size: 13px;
-    font-weight: bold;
+.status-item span, .status-item strong {
+    display: block;
 }
-
 .status-item strong {
-    float: right;
-    font-size: 13px;
-    color: #8e713f;
+    margin: 5px 0;
 }
-
 .status-bar {
-    width: 100%;
-    height: 10px;
-    background: #eee8dc;
-    border-radius: 20px;
-    margin-top: 12px;
+    height: 9px;
     overflow: hidden;
+    border-radius: 20px;
+    background: #eee5dc;
 }
-
 .status-fill {
     height: 100%;
     width: 100%;
-    border-radius: 20px;
-    transition: width 0.3s ease;
+    border-radius: inherit;
+    transition: width .2s ease;
 }
-
 .hunger-fill {
-    background: #e9b94e;
+    background: #e9ae55;
 }
-
 .thirst-fill {
-    background: #78bce5;
+    background: #65b7d4;
 }
-
 .health-fill {
-    background: #80bd80;
+    background: #82b77b;
 }
-
 .stress-fill {
-    background: #e78d8d;
-    width: 0%;
+    background: #d98282;
 }
-
-/* ===================================
-   CHICKEN ENVIRONMENT
-=================================== */
-
-.chicken-area {
-    text-align: center;
-}
-
 .environment-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 18px;
+    gap: 12px;
 }
-
 .environment-header h3 {
-    color: #9b7136;
+    margin: 0;
 }
-
-#lights-btn {
-    background: #fff1c9;
-    color: #8d6b31;
-    padding: 10px 15px;
-    border-radius: 10px;
-    font-weight: bold;
-}
-
-#lights-btn:hover {
-    background: #ffe6a4;
-}
-
+/* 8. Chicken home scene and front-facing chick */
 #chicken-environment {
     position: relative;
-    min-height: 310px;
-    background: linear-gradient(
-        to bottom,
-        #e5f5ff 0%,
-        #f4f9e9 65%,
-        #dcecc7 65%,
-        #dcecc7 100%
-    );
-    border-radius: 16px;
-    padding: 30px 15px 20px;
     overflow: hidden;
+    min-height: 270px;
+    margin-top: 14px;
+    padding: 26px 16px 18px;
+    border-radius: 18px;
+    text-align: center;
+    background: linear-gradient(#dff3ff 0 58%, #c7e6a9 58% 100%);
 }
-
 .environment-decoration {
     position: absolute;
-    top: 15px;
-    left: 25px;
-    font-size: 35px;
-    opacity: 0.8;
+    top: 12px;
+    left: 22px;
+    font-size: 2rem;
+    opacity: .8;
 }
-
+.chicken-character svg {
+    display: block;
+    width: clamp(100px, 18vw, 140px);
+    height: auto;
+    margin: 0 auto;
+}
 .chicken-character {
-    font-size: 100px;
-    margin-top: 20px;
-    animation: chickFloat 2s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: fit-content;
+    margin: 26px auto 4px;
+    font-size: clamp(4.5rem, 12vw, 6rem);
+    line-height: 1.2;
+    transform: none !important;
+    filter: drop-shadow(0 5px 2px rgba(80, 70, 40, .12));
 }
-
-#chicken-name {
-    color: #8d6b31;
-    margin: 8px 0;
+#chicken-environment h3, #chicken-environment p {
+    position: relative;
+    z-index: 1;
 }
-
-#chicken-message {
-    color: #8a7963;
-    font-size: 13px;
-}
-
+/* 9. Food, water, lighting, and care controls */
 .food-water-area {
     display: flex;
     justify-content: center;
-    gap: 35px;
-    margin-top: 22px;
+    gap: 22px;
+    margin-top: 14px;
 }
-
-.food-water-area div {
-    background: #fffaf0;
-    border: 1px solid #eddfc6;
-    border-radius: 12px;
-    min-width: 75px;
+.food-water-area > div {
+    min-width: 88px;
     padding: 9px;
-    font-size: 24px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.8);
+    font-size: 1.3rem;
 }
-
 .food-water-area small {
     display: block;
-    color: #8a7963;
-    font-size: 11px;
+    font-size: .75rem;
 }
-
-/* ===================================
-   CARE PANEL
-=================================== */
-
-.care-panel > p {
-    color: #998873;
-    font-size: 13px;
-    margin-top: -10px;
-    margin-bottom: 18px;
+.lights-off {
+    background: linear-gradient(#59617d 0 58%, #596d4b 58% 100%) !important;
+    color: #fff;
 }
-
+.lights-off .environment-decoration {
+    opacity: .35;
+}
+/* Responsive chicken-care action buttons */
 .care-buttons {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
+    gap: 10px;
 }
-
 .care-buttons button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    background: #fff7e5;
-    border: 1px solid #f1e2c4;
-    border-radius: 14px;
-    padding: 17px 8px;
-    color: #80633c;
-    font-weight: bold;
+    display: grid;
+    justify-items: center;
+    gap: 5px;
+    min-width: 0;
+    background: #f3a45e;
 }
-
-.care-buttons button:hover {
-    background: #ffedc2;
-    transform: translateY(-3px);
-}
-
-.care-buttons button {
-    font-size: 25px;
-}
-
 .care-buttons button span {
-    font-size: 12px;
+    font-size: .9rem;
 }
-
-/* ===================================
-   GAME FOOTER
-=================================== */
-
+/* 10. Game footer and page footer */
 .game-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fff;
-    border: 1px solid #f1e6d3;
-    border-radius: 15px;
-    padding: 17px 22px;
+    gap: 12px;
+    padding: 8px 4px 0;
 }
-
 .game-footer p {
-    color: #9b7136;
-    font-size: 15px;
+    font-size: 1.15rem;
 }
-
 #quit-btn {
-    background: #f8e6df;
-    color: #a65e4e;
-    padding: 10px 16px;
-    border-radius: 10px;
-    font-weight: bold;
+    background: #a86d58;
 }
-
-#quit-btn:hover {
-    background: #f2d3c8;
+footer {
+    padding: 18px;
+    text-align: center;
+    color: var(--muted);
+    font-size: .9rem;
 }
-
-/* ===================================
-   LIGHTS OFF
-=================================== */
-
-#chicken-environment.lights-off {
-    background: linear-gradient(
-        to bottom,
-        #273650 0%,
-        #3c4963 65%,
-        #29364b 65%,
-        #29364b 100%
-    );
-}
-
-#chicken-environment.lights-off #chicken-name,
-#chicken-environment.lights-off #chicken-message {
-    color: #fff4d8;
-}
-
-/* ===================================
-   GAMEPLAY RESPONSIVE
-=================================== */
-
-@media (max-width: 600px) {
-
+/* 11. Tablet and mobile layout */
+@media (max-width: 640px) {
+    .game-container {
+        width: min(100% - 20px, 560px);
+    }
+    header {
+        padding-top: 20px;
+    }
+    .welcome-section, .dashboard {
+        padding: 20px 16px;
+        border-radius: 18px;
+    }
+    .stats-container {
+        gap: 8px;
+    }
+    .stat-card {
+        padding: 14px 5px;
+    }
+    .stat-card h3 {
+        font-size: 1.45rem;
+    }
+    .stat-card p {
+        font-size: .78rem;
+    }
+    .egg-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .chicken-info {
+        gap: 10px;
+    }
+    .chicken-info > div {
+        min-width: 0;
+        flex: 1;
+    }
     .game-header {
-        gap: 12px;
-        padding: 16px;
+        align-items: flex-start;
     }
-
-    .game-header h2 {
-        font-size: 18px;
-    }
-
-    .game-time {
-        padding: 10px;
-    }
-
     .status-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
     }
-
+    .status-panel, .chicken-area, .care-panel {
+        padding: 14px;
+    }
     .care-buttons {
         grid-template-columns: repeat(3, 1fr);
     }
-
-    .environment-header {
-        gap: 10px;
+    .care-buttons button {
+        padding: 11px 6px;
     }
-
-    .environment-header h3 {
-        font-size: 15px;
-    }
-
     .game-footer {
-        gap: 10px;
+        align-items: center;
+    }
+    .game-footer p {
+        font-size: 1rem;
     }
 }
-
-/* ===================================
-   PLAYER LOGIN
-=================================== */
-
-.username-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    max-width: 350px;
-    margin: 20px auto;
-}
-
-.username-section label {
-    font-weight: 600;
-    color: #806746;
-}
-
-.username-section input,
-#chick-name-input {
-    width: 100%;
-    padding: 13px 15px;
-    border: 2px solid #eadcc5;
-    border-radius: 12px;
-    background-color: #fffdf8;
-    color: #604b32;
-    font-size: 15px;
-    outline: none;
-    box-sizing: border-box;
-}
-
-.username-section input:focus,
-#chick-name-input:focus {
-    border-color: #c9a66b;
-    box-shadow: 0 0 0 3px rgba(201, 166, 107, 0.15);
-}
-
-#login-message {
-    color: #a17d4d;
-    font-size: 13px;
-    min-height: 18px;
-    text-align: center;
-}
-
-
-/* ===================================
-   CHICK NAMING
-=================================== */
-
-#chick-naming {
-    width: 100%;
-    max-width: 380px;
-    margin: 25px auto;
-    padding: 25px;
-    background-color: #fffaf0;
-    border: 2px solid #f0dfbd;
-    border-radius: 18px;
-    text-align: center;
-    box-sizing: border-box;
-}
-
-#chick-naming h2 {
-    color: #806746;
-    margin-bottom: 18px;
-}
-
-#chick-naming button {
-    width: 100%;
-    margin-top: 15px;
-    padding: 13px;
-    border: none;
-    border-radius: 12px;
-    background-color: #c9a66b;
-    color: white;
-    font-weight: 600;
-    font-size: 15px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-#chick-naming button:hover {
-    background-color: #ae8950;
-    transform: translateY(-2px);
-}
-
-#chick-name-message {
-    min-height: 18px;
-    margin-top: 12px;
-    color: #a17d4d;
-    font-size: 13px;
-}
-
-
-/* ===================================
-   HIDDEN ELEMENT
-=================================== */
-
-.hidden {
-    display: none !important;
+/* 12. Small phone layout */
+@media (max-width: 380px) {
+    .account-buttons {
+        flex-direction: column;
+    }
+    .status-grid {
+        grid-template-columns: 1fr;
+    }
+    .care-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
